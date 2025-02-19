@@ -5,6 +5,12 @@
 #include <algorithm>
 #include <cctype>
 
+/*
+Chris Bridges
+CS 300 DSA: Analysis and Design
+18 FEB 2025
+*/
+
 using namespace std;
 
 const int TABLE_SIZE = 211;
@@ -36,16 +42,16 @@ public:
         table.resize(TABLE_SIZE);
     }
 
-    // Insert course into the hash table using linear probing
+    // Insert course into the hash table
     void insert(const Course& course) {
         int index = hashFunction(course.number);
 
-        // Linear probing to find an empty slot
+        // Finds an empty slot
         while (!table[index].isEmpty) {
             if (table[index].number == course.number) {
                 return; // Prevents duplicate insertion
             }
-            index = (index + 1) % TABLE_SIZE; // Move to the next index
+            index = (index + 1) % TABLE_SIZE; // Moves to the next index
         }
 
         // Insert course into the available slot
@@ -53,11 +59,11 @@ public:
         table[index].isEmpty = false;
     }
 
-    // Search for a course using linear probing
+    // Search for a course
     Course* search(const string& courseNumber) {
         int index = hashFunction(courseNumber);
 
-        // Linear probing search
+        // search
         while (!table[index].isEmpty) {
             if (table[index].number == courseNumber) {
                 return &table[index];   // If found 
@@ -72,7 +78,7 @@ public:
     void printSorted() {
         vector<Course> courses;
 
-        // Collects non-empty courses
+        // Collects courses that are not empty
         for (const auto& course : table) {
             if (!course.isEmpty) {
                 courses.push_back(course);
@@ -172,6 +178,7 @@ int main() {
     while (true) {
         cout << "\n1. Load Courses\n2. Print Course List\n3. Search for a Course\n9. Exit\nEnter choice: ";
 
+        // Input validation to prevent infinite looping
         if (!(cin >> choice)) {
             cout << "Invalid input! Enter a number.\n";
             cin.clear();
@@ -193,7 +200,7 @@ int main() {
         case 3:
             cout << "Enter course number: ";
             getline(cin, courseNumber);
-            transform(courseNumber.begin(), courseNumber.end(), courseNumber.begin(), ::toupper);
+            transform(courseNumber.begin(), courseNumber.end(), courseNumber.begin(), ::toupper);   // Forces to upper for search improvement `
             searchCourse(courseHashTable, courseNumber);
             break;
         case 9:
